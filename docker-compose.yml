@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mail-server:
+    build: .
+    container_name: mail-server-app
+    ports:
+      - "25:25"      # SMTP port
+      - "54321:54321" # API port
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - mail-network
+
+networks:
+  mail-network:
+    driver: bridge
