@@ -1,5 +1,5 @@
 const express = require('express');
-const { emails } = require('./mail-server');
+const { emails } = require('./emails');
 
 const app = express();
 const PORT = 54321;

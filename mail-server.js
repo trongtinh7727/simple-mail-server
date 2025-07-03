@@ -1,7 +1,6 @@
 const { SMTPServer } = require('smtp-server');
 const { simpleParser } = require('mailparser');
-
-const emails = [];
+const { emails } = require('./emails');
 
 const server = new SMTPServer({
     authOptional: true,
@@ -30,5 +29,3 @@ const server = new SMTPServer({
 server.listen(25, () => {
     console.log('SMTP server listening on port 25');
 });
-
-module.exports = { emails };
