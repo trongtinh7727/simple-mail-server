@@ -1,6 +1,15 @@
 const { SMTPServer } = require('smtp-server');
 const { simpleParser } = require('mailparser');
-const { emails } = require('./emails');
+const db = require('./database');
+const fs = require('fs');
+const path = require('path');
+
+// Đảm bảo thư mục data tồn tại
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+    console.log('Created data directory');
+}
 
 const server = new SMTPServer({
     authOptional: true,
@@ -14,10 +23,24 @@ const server = new SMTPServer({
     onData(stream, session, callback) {
         simpleParser(stream)
             .then(parsed => {
-                const { subject, from, text } = parsed;
-                emails.push({ subject, from: from.text, text });
-                console.log('Received email:', subject);
-                callback();
+                const { subject, from, to, text, html } = parsed;
+                
+                // Lưu email vào database
+                db.saveEmail({
+                    from: from.text,
+                    to: to?.text || session.envelope.rcptTo.map(rcpt => rcpt.address).join(', '),
+                    subject,
+                    text,
+                    html
+                })
+                .then(() => {
+                    console.log('Received and saved email:', subject);
+                    callback();
+                })
+                .catch(err => {
+                    console.error('Database save error:', err);
+                    callback(err);
+                });
             })
             .catch(err => {
                 console.error('Parse error:', err);

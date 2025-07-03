@@ -12,6 +12,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+      - mail_data:/app/data
     restart: unless-stopped
     networks:
       - mail-network
@@ -19,3 +20,7 @@ services:
 networks:
   mail-network:
     driver: bridge
+
+volumes:
+  mail_data:
+    driver: local
