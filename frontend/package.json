@@ -1,0 +1,32 @@
+{
+  "name": "mail-viewer",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "core-js": "^3.25.3",
+    "date-fns": "^2.29.3",
+    "vue": "^2.7.10",
+    "vue-router": "^3.6.5",
+    "vuetify": "^2.6.10",
+    "dompurify": "^2.4.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-plugin-eslint": "~5.0.8",
+    "@vue/cli-plugin-router": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.24.0",
+    "eslint-plugin-vue": "^9.5.1",
+    "sass": "~1.55.0",
+    "sass-loader": "^13.0.2",
+    "vue-cli-plugin-vuetify": "~2.5.8",
+    "vuetify-loader": "^1.9.2"
+  }
+}
