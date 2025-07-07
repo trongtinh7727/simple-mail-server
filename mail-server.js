@@ -24,7 +24,7 @@ const server = new SMTPServer({
         simpleParser(stream)
             .then(parsed => {
                 const { subject, from, to, text, html } = parsed;
-                
+
                 // Lưu email vào database
                 db.saveEmail({
                     from: from.text,
@@ -33,20 +33,28 @@ const server = new SMTPServer({
                     text,
                     html
                 })
-                .then(() => {
-                    console.log('Received and saved email:', subject);
-                    callback();
-                })
-                .catch(err => {
-                    console.error('Database save error:', err);
-                    callback(err);
-                });
+                    .then(() => {
+                        console.log('Received and saved email:', subject);
+                        callback();
+                    })
+                    .catch(err => {
+                        console.error('Database save error:', err);
+                        callback(err);
+                    });
             })
             .catch(err => {
                 console.error('Parse error:', err);
                 callback(err);
             });
     },
+});
+
+server.on('error', err => {
+    if (err.code === 'ERR_SSL_UNKNOWN_PROTOCOL') {
+        console.log(`Attempted non-SMTP connection from: ${err.remote}`);
+        return;
+    }
+    console.error('SMTP server error:', err);
 });
 
 server.listen(25, () => {
